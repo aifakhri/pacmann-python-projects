@@ -131,32 +131,66 @@ Explanation:
 * The ``while`` loop is used to always show the main menu of the program. It will end when we select "Keluar Dari Program" menu, which is for exiting the program.
 * The ``print()`` function is used to display the menu
 * ``choice`` variable would store the user input as an integer, hence, if user enter any kind of string it will be captured by the ``expect`` statement because we expect a ``ValueEror`` error type.
-* For choice number 1, 2, 3 and 4, we have created a new function for code readability purpose.
-* We expect the user to select the menu with numbers, hence we wrap the ``input`` function in the ``int`` function which transform any user input into integer. If user enter string or text we capture the error with try-except statement to notify the user.
+* For choice number 1, 2, 3 and 4, we have created a new function for code readability purpose, respectively.
+* For choice number 5, the user is going to check the cart status by calling the ``check_order()`` method from ``Transaction`` clas.
+* For choice number 6, the user is going to check the total price of their purchase by calling the ``total_price()``. 
+We expect the user to select the menu with numbers, hence we wrap the ``input`` function in the ``int`` function which transform any user input into integer. If user enter string or text we capture the error with try-except statement to notify the user.
 * If the user enter any number outside the menu we would also notify the user.
 
 From this view, user free to interact with the application by selecting the menu's number. If a user enter a value beyond the menu it will print a notification.
 
-#### Selecting Number 1 - Tambah Item ke Keranjang
-By selecting number we would call ``add_new_item()`` function:
+
+#### ``add_new_item_menu()`` Function
+By selecting number from the main menu, 1 the user we will call ``add_new_item()`` function:
 
 --Code Snippet--
 
-The function, first, would clear the CLI then show a message to the user to input the item name. Then we prompt item qty and item price message, respectively, so the user can input any data they want. We expect the 
+The function, first, would clear the CLI then show a message to the user to input the item name. Then we prompt item qty and item price message, respectively.
 
-#### Selecting Number 2 - Modifikasi Item di Keranjang
-
-
-#### Selecting Number 3 - Hapus Item di Keranjang
+#### ``modify_item_menu()`` Function
+When this option is selected by user, the program would call ``modify_item_menu()`` function. 
 
 
-#### Selecting Number 4 - Reset Keranjang
+The function would clear the current CLI terminal and then shows the new menu called "Modifikasi Item Di Keranjang" with following menu
+1. Modifikasi Nama Barang di Keranjang
+2. Modifikasi Jumlah Barang di Keranjang
+3. Modifikasi Harga Barang di Keranjang
+4. Kembali ke Menu Utama
 
+The menu number 4 is to go back to the main menu. The other menu would prompt a message depending the menu
 
-#### Selecting Number 5 - Tambah Item ke Keranjang
+##### Selecting Menu Number 1
+This menu is used to change item name on the cart. When the menu is selected the program would prompt a message for the user to enter item name they want to change. Then the program would prompt a message for the desired item name to be submitted.
 
+After the user finished entering the data, the program would call the ``update_item_name()`` method with the ``item_name`` and ``new_item_name`` as the parameter.
 
-#### Selecting Number 6 - Tambah Item ke Keranjang
+When the process is done, the CLI display will be cleared and the display will change to the main menu display.
+
+##### Selecting Menu Number 2
+This menu is used to change item price on the cart. When the menu is selected the program would prompt a message for the user to enter item name of the item quantity they want to change. Then the program would prompt a message for the desired item quantity to be submitted.
+
+After the user finished entering the data, the program would call the ``update_item_wty()`` method with the ``qty_item_name`` and ``new_item_qty`` as the parameter.
+
+When the process is done, the CLI display will be cleared and the display will change to the main menu display.
+
+##### Selecting Menu Number 3
+This menu is used to change item price on the cart. When the menu is selected the program would prompt a message for the user to enter item name of the item price they want to change. Then the program would prompt a message for the desired item price to be submitted.
+
+After the user finished entering the data, the program would call the ``update_item_price()`` method with the ``item_name`` and ``new_item_price`` as the parameter.
+
+When the process is done, the CLI display will be cleared and the display will change to the main menu display.
+
+#### Selecting Number 4 - Hapus Item di Keranjang
+By selecting menu number 3, the program will call ``delete_item_menu()``, which contains this code:
+
+The code will reset clear the main menu display and showing new menu. The user is prompted with the message to enter the item name they want to delete. After that the program will call ``delete_item()`` method from Transaction class.
+
+#### Selecting Number 5 - Reset Keranjang
+By selecting this menu, the program will call ``reset_cart_menu()``, which contains this code:
+
+The code will reset clear the main menu display and showing new menu. The user is prompted with a choice whether they want to reset the current cartt. If they select number 1 user will After that the program will call ``delete_item()`` method from Transaction class. if they select number 2, reset is cancelled and the current menu is cleared and main menu is shown.
+
+The user can opt out by selectint the number 3 menu. There is also try-expect statement to make sure the program will not error when the user enter a string to the program
 
 ## Test
 

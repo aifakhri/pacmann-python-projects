@@ -90,19 +90,22 @@ class Transaction:
         
 
     def total_price(self):
+        if self.cart:
+            return "Anda Tidak Memiliki Barang di Keranjang"
+
         total = 0
         for elem in self.cart:
             total += elem["amount"]
         
         if (total > self.HIGH_AMOUNT):
             total = total - (total*self.HIGH_DISCOUNT)
-            print("SELAMAT ANDA MENDAPATKAN DISKON 20%!, Total Belanja Anda Adalah: ", total)
+            print("SELAMAT ANDA MENDAPATKAN DISKON 5%!, Total Belanja Anda Adalah: ", total)
         elif (total > self.MID_AMOUNT) and (total < self.HIGH_AMOUNT):
             total = total - (total*self.MID_DISCOUNT)
-            print("SELAMAT ANDA MENDAPATKAN DISKON 20%!, Total Belanja Anda Adalah: ", total)
+            print("SELAMAT ANDA MENDAPATKAN DISKON 8%!, Total Belanja Anda Adalah: ", total)
         elif (total > self.LOWER_AMOUNT) and (total < self.MID_AMOUNT):
             total = total - (total*self.LOWER_AMOUNT)
-            print("SELAMAT ANDA MENDAPATKAN DISKON 20%!, Total Belanja Anda Adalah: ", total)
+            print("SELAMAT ANDA MENDAPATKAN DISKON 10%!, Total Belanja Anda Adalah: ", total)
         else:
             print("Total Belanja Anda Adalah: ", total)
 

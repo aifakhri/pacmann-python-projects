@@ -1,20 +1,21 @@
 import os
-from script import Transaction
+from cashier import Transaction
 
 
-
-
-## Common Messages During User Interaction
-MENU_NOT_AVAILABLE_MSG = "Menu is not Available, Please Select the Available Menu"
-SELECTION_NOT_INTEGER = "Please Enter Numbers, not String"
+# Common Messages During User Interaction
+MENU_NOT_AVAILABLE_MSG = "Menu is not Available, Please Select \
+    the Available Menu"
+SELECTION_NOT_INTEGER_MSG = "Please Enter Numbers, not String"
+BACK_TO_MAIN_MENU_MSG = "\nBack to main Menu\n"
 
 
 def add_new_item_menu(transaction_class, command):
     """Adding item to the transaction
 
     The main menu will be cleared and the adding item menu is prompted.
-    User will be asked to input the item name, item quantity and item price in order.
-    When the input is finished it will call Transaction.add_item() method.
+    User will be asked to input the item name, item quantity and
+    item price in order. When the input is finished
+    it will call Transaction.add_item() method.
 
     Parameters
     ----------
@@ -22,7 +23,7 @@ def add_new_item_menu(transaction_class, command):
        The Transaction Class object.
 
     command : str
-        The command to clear the 
+        The command to clear the
     """
 
     # Clear the main menu
@@ -37,16 +38,17 @@ def add_new_item_menu(transaction_class, command):
     item_price = input("Enter the Item Price [Integer]: ")
 
     # Calling the transaction_class.add_item method
-    transaction_class.add_item(
-        item_name=item_name, 
-        item_qty=item_qty, 
-        item_price=item_price
-    )
-    
+    message = transaction_class.add_item(
+                item_name=item_name,
+                item_qty=item_qty,
+                item_price=item_price)
+    print(message)
+
+
 def modify_item_menu(transaction_class, command):
     """Displaying transaction modification menu.
 
-    The main menu will be cleared and then user will be prompted with menu 
+    The main menu will be cleared and then user will be prompted with menu
     to be selected with integer:
     - Menu 1 - Update Old Item Name with the new one
         User will enter the old item name to be replaced and the new item name
@@ -57,11 +59,12 @@ def modify_item_menu(transaction_class, command):
         they want to update. Then it will call Transaction.update_item_qty()
         method and update the transaction.
     - Menu 3 - Update the current item price with the new item price
-        User will be asked to enter the item name of the price they want to update
-        along with the new price value. Then it will call 
+        User will be asked to enter the item name of the price they
+        want to update along with the new price value. Then it will call
         Transaction.update_item_price() method and update the transaction
     - Menu 4 - Back to main menu
-        User decide to not update any value in the transaction, and back to main menu.
+        User decide to not update any value in the transaction,
+        and back to main menu.
 
     Parameters
     ----------
@@ -69,15 +72,16 @@ def modify_item_menu(transaction_class, command):
        The Transaction Class object.
 
     command : str
-        The command to clear the 
-    
+        The command to clear the
+
     Exceptions
     ----------
     ValueError:
-        If the user enter string when they select the menu, the exception will be raised,
-        then it will print warning message and reset is cancelled.
+        If the user enter string when they select the menu,
+        the exception will be raised, then it will print warning message
+        and reset is cancelled.
     """
-    
+
     # Clear the main menu
     os.system(command)
 
@@ -89,75 +93,53 @@ def modify_item_menu(transaction_class, command):
           "2. Update Item Quantity\n"
           "3. Update Item Price\n"
           "4. Back to Main Menu\n")
-    
+
     try:
         choice = int(input("Select Menu [1-4]: "))
         if (choice == 1):
             # Prompt input the be submitted by user
-            item_name = input("Enter The Item Name: ")
+            item_name = input("\nEnter The Item Name: ")
             new_item_name = input("Enter The New Item Name: ")
 
             # Call Transation.update_item_name() method
-            transaction_class.update_item_name(name=item_name, new_name=new_item_name)
+            message = transaction_class.update_item_name(
+                item_name=item_name,
+                new_item_name=new_item_name)
+            print(message)
         elif (choice == 2):
             # Prompt input the be submitted by user
-            qty_item_name = input("Enter The Item Name: ")
+            qty_item_name = input("\nEnter The Item Name: ")
             new_item_qty = input("Enter The New Quantity of the Item: ")
 
             # Call Transation.update_item_qty() method
-            transaction_class.update_item_qty(name=qty_item_name, new_qty=new_item_qty)
+            message = transaction_class.update_item_qty(
+                item_name=qty_item_name,
+                new_item_qty=new_item_qty)
+            print(message)
         elif (choice == 3):
             # Prompt input the be submitted by user
-            price_item_name = input("Enter The Item Name: ")
+            price_item_name = input("\nEnter The Item Name: ")
             new_item_price = input("Enter The New Price of the Item: ")
-            
+
             # Call Transation.update_item_price() method
-            transaction_class.update_item_price(name=price_item_name, new_price=new_item_price)
+            message = transaction_class.update_item_price(
+                item_name=price_item_name,
+                new_item_price=new_item_price)
+            print(message)
         elif (choice == 4):
-            pass
+            print(BACK_TO_MAIN_MENU_MSG)
         else:
             print(MENU_NOT_AVAILABLE_MSG)
-    except ValueError:
-        print(SELECTION_NOT_INTEGER)
+    except (ValueError):
+        print(SELECTION_NOT_INTEGER_MSG)
 
-def reset_menu(transaction_class):
-    """Displaying the option whether user want to reset transaction or not.
-
-    User will be asked to select whether to chose to delete all item in transaction or not.
-
-    
-    Parameters
-    ----------
-    transaction_class : Class
-       The Transaction Class object.
-    
-    Exceptions
-    ----------
-    ValueError:
-        If the user enter string when they select the menu, the exception will be raised,
-        then it will print warning message and reset is cancelled.
-    """
-
-    print("Are You Sure you Want to Delete all of the Transaction\n"
-          "1. Yes\n"
-          "2. No\n")
-    
-    try:
-        choice = int(input("Select Menu [1-3]: "))
-        if (choice == 1):
-            transaction_class.reset_transaction()
-        elif (choice == 2):
-            print("\nDelete is Cancelled, Back to Main Menu")
-        else:
-            print("\nPlease Select the Available Menu")
-    except ValueError:
-        print(SELECTION_NOT_INTEGER)
 
 def delete_item_menu(transaction_class, command):
     """Displaying the menu for deleting single item
-    
-    The function will ask user to enter the name of the item they want to delete.
-    Then it will call Transaction.delete_item method to execute the deletion.
+
+    The function will ask user to enter the name of the item
+    they want to delete. Then it will call Transaction.delete_item method
+    to execute the deletion.
 
     Parameters
     ----------
@@ -171,22 +153,73 @@ def delete_item_menu(transaction_class, command):
     os.system(command)
 
     # Displaying the delete menu
-    print("================================\n",
-          "** Delete Single Item Menu    **\n",
-          "================================\n",)
-    item_name = input("\nPlease Enter the Item Name to be Deleted: ")
-    
-    # Calling Transaction.delete_item() method
-    transaction_class.delete_item(name=item_name)
+    print("================================\n"
+          + "** Delete Single Item Menu    **\n"
+          + "================================\n")
+    item_name = input("Please Enter the Item Name to be Deleted: ")
+
+    print(f"\nAre You Sure You want to delete '{item_name}' item?\n"
+          + "1. Yes\n"
+          + "2. No\n")
+
+    try:
+        choice = int(input("Select The Menu [1-2]: "))
+        if (choice == 1):
+            # Calling Transaction.delete_item() method
+            message = transaction_class.delete_item(item_name=item_name)
+            print(message)
+        elif (choice == 2):
+            print(BACK_TO_MAIN_MENU_MSG)
+        else:
+            print(MENU_NOT_AVAILABLE_MSG)
+    except (ValueError):
+        print(SELECTION_NOT_INTEGER_MSG)
+
+
+def reset_menu(transaction_class):
+    """Displaying the option whether user want to reset transaction or not.
+
+    User will be asked to select whether to chose to delete 
+    all item in transaction or not.
+
+    Parameters
+    ----------
+    transaction_class : Class
+       The Transaction Class object.
+
+    Exceptions
+    ----------
+    ValueError:
+        If the user enter string when they select the menu,
+        the exception will be raised, then it will print warning message
+        and reset is cancelled.
+    """
+
+    print("\nAre You Sure you Want to Delete all of the Transaction\n"
+          "1. Yes\n"
+          "2. No\n")
+
+    try:
+        choice = int(input("Select Menu [1-3]: "))
+        if (choice == 1):
+            message = transaction_class.reset_transaction()
+            print(message)
+        elif (choice == 2):
+            print("\nDelete is Cancelled, Back to Main Menu")
+        else:
+            print(MENU_NOT_AVAILABLE_MSG)
+    except (ValueError):
+        print(SELECTION_NOT_INTEGER_MSG)
+
 
 def main():
     """Displaying the main menu of the application
-    
-    The function will instantiate Transaction function in the transact varialble 
-    everytime the program is run. The program will show CLI-Based menu, 
-    where user can select option based on The number of the menu. 
-    If the user select the number outside the number on the menu 
-    warning message will be shown.
+
+    The function will instantiate Transaction function in
+    the transact varialble everytime the program is run.
+    The program will show CLI-Based menu, where the user can select
+    option based on The number of the menu. If the user select the number
+    outside the number on the menu warning message will be shown.
 
     Exceptions
     ----------
@@ -197,21 +230,20 @@ def main():
     transact = Transaction()
 
     # Select Clear Command for the Command Line Interface based on the OS
-    # The clear command is used to clear the menu when user switching between menu  
     clear_command = "cls" if os.name == "nt" else "clear"
 
     # Main Menu For Our Program
     while True:
-        print("=======================================\n",
-              "**   Cashier Application             **\n",
-              "=======================================\n",
-              "1. Add Item for Transaction\n"
-              "2. Modify Item in Transaction\n"
-              "3. Delete Item in Transaction\n"
-              "4. Delete All of the Transactions\n"
-              "5. Check Transaction\n"
-              "6. Check Total Amount of Transaction\n"
-              "7. Exit From Program\n")
+        print("=======================================\n"
+              + "**   Cashier Application             **\n"
+              + "=======================================\n"
+              + "1. Add Item for Transaction\n"
+              + "2. Modify Item in Transaction\n"
+              + "3. Delete Item in Transaction\n"
+              + "4. Delete All of the Transactions\n"
+              + "5. Check Transaction\n"
+              + "6. Check Total Amount of Transaction\n"
+              + "7. Exit From Program\n")
 
         try:
             choice = int(input("Select Menu [1-7]: "))
@@ -222,22 +254,25 @@ def main():
             elif (choice == 3):
                 delete_item_menu(transact, clear_command)
             elif (choice == 4):
-                reset_menu(transact, clear_command)
+                reset_menu(transact)
             elif (choice == 5):
-                transact.check_order()
+                message = transact.check_order()
+                print(message)
             elif (choice == 6):
-                transact.total_price()
+                message = transact.total_price()
+                print(message)
             elif (choice == 7):
-                os.system(clear_command)
                 exit()
             else:
                 print(MENU_NOT_AVAILABLE_MSG)
 
             input("\nPress Enter to Continue\n")
             os.system(clear_command)
-        except ValueError:
-            print(SELECTION_NOT_INTEGER)
+        except (ValueError):
+            print(SELECTION_NOT_INTEGER_MSG)
+            input("\nPress Enter to Continue\n")
             os.system(clear_command)
+
 
 if __name__ == "__main__":
     main()

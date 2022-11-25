@@ -2,34 +2,37 @@
 
 ## Introduction
 ### Project Background
-An Online Supermarket wants to add a new feature to their application to help their customer adding, modifying and deleting the items, the quantity of the items, the price of the items that the customer wants to buy. The desired feature is also required to provide calculation of the amount of bought items along with the total purchase of all of the items. For the total purchase the Online Supermarket will always provide discount for the total purchase that reaches a certain value.
+An Online Supermarket wants to add a new feature to their application to help their customers or users to add, modify and delete their transactions which contains the name of the items, the quantity of the items, the price of the items that. The desired feature is also required to provide transction checkers to notify user whether their items in their transaction are already valid or not. Also the apps wants to help the users to calculate of the total amount of the transactions along with the discount calculation if the certain amount of transaction is reached.
 
 ### Project Objectives and Requirement
-From the background above we would provide a solution called **Transaction** feature. However, Before the feature is created and intregared to the existing app, we will create a mock up application of this feature with Python script. 
-
-This mock up is a Command Line Interace application, it will have the same requorements as the feature that want to be added. The requitements are:
-- Adding item name, item quantity and item price to the cart.
-- Update item name on the cart.
-- Update item quantity of a certain item.
-- Update item price of a certain item.
-- Delete a single item.
-- Reset the entire cart.
-- Check the cart, whether there is an empty cart or invalid value inside the cart.
-- Calculate the total purchase of the entire cart. If the the purchase reaches a certain limit, the purchase would be discounted.
+From the background above we would provide a solution called **Cashier** program. The program is a Command Line Interface (CLI) progam which is coded in Python. Here are the requirement of the program:
+- Absracting the cashier in a Class called Transaction.
+- Create class' method for adding item name, item quantity and item price.
+- Create class' method for updating item name on the cart.
+- Create class' method for updating item quantity of a certain item.
+- Create class' method for updating item price of a certain item.
+- Create class' method for deleting a single item.
+- Create class' method for deleting all of the items.
+- Create class' method for checking the transaction, whether there is an empty cart or invalid value inside the cart.
+- Create class' method for calculating the total purchase of the entire Transaction. If the the purchase reaches a certain limit, the purchase would be discounted.
 - The discount requitements are:
     - if the total price of the purchase is greater than Rp. 500,000 the discount is 10%
     - if the total price of the purchase is greater than Rp. 300,000 the discount is 8%
     - if the total price of the purchase is greater than Rp. 500,000 the discount is 5%
 
-All of these requirements would be created as methods in a class called `Transaction`.
-
+Users can interact with these features through the interactive Command Line Interface (CLI).
 
 ### Flow Chart
 Will be loaded later
 
 ## Code Explanation
 ### The script.py Function
-In this Python script we will store the Transaction class. which holds all the requirement of our program. There are few elements in our Class: 
+In this Python script we will store the Transaction class. which holds all the requirement of our program. There are few elements in our Class. There are 2 external modules that is imported to this file:
+```Python
+from copy import deepcopy
+from tabulate import tabulate
+```
+The ``copy.deepcopy()`` is used to create a full copy of an object, whilst ``tabulate.tabulate()`` is used to create a structured table.
 
 #### 1. Class instance
 The class instance in this class are the constants that we will use on our class:
@@ -40,12 +43,9 @@ MID_AMOUNT = 300000
 MID_DISCOUNT = 0.08
 HIGH_AMOUNT = 500000
 HIGH_DISCOUNT = 0.1
-COLUMN_NAME_MAP = {
-    "index": "Nama Item",
-    0: "Jumlah Item", 
-    1: "Harga/Item", 
-    2: "Total Harga"
-}
+TABLE_HEADERS = [
+    "Item Name", "Item Quantity", "Price/Item", "Total" 
+]
 ```
 #### 2. Class Attributes
 There is only one class attribute in our class which is self.containers, which will holds all the transaction items in a Dictionary:
@@ -61,45 +61,60 @@ Here is the code snippet for the method
 ```Python
 try:
     self.container[item_name] = [int(item_qty), int(item_price)]
-except (ValueError):
-    print(f"\nAdding Item Failed, Quantity: {item_qty} and Price: {item_price} are Invalid Data")
+
+    message = "\nItem is successfully Added" 
+    return message
+except ValueError:
+    message = f"\nAdding Item Failed, Quantity: {item_qty} "\
+                + f"and Price: {item_price} are Invalid Data" 
+    return message
 ```
 The function requires 3 parameters:
 * item_name: The name of the item
 * item_qty: The quantity of the item
 * item_price: The price of the item
 
-The ``item_name`` is used as the dictionary key while the value is a list that contains ``item_qty`` and ``item_price`` parameter.
+The ``item_name`` parameter is used as the dictionary key while the value is a list that contains ``item_qty`` and ``item_price`` parameter.
 
 We have a convention for the order of the list. The index ``0`` is always for the quantity (qty) of the item value, whilst the index ``1`` is always for the price of the value.
 
-There is also an exception that will be raised when the ValueError is occured due to inability to transform qty and price into integer.
+There is also an exception that will be raised when the ``ValueError`` is occured due to inability to transform qty and price into integer. The program will return success message if the Exception is not raised, otherwise failed message.
 
 ##### 2. ``update_item_name(item_name, new_item_name)``
 Here is the code snippet for the method
 ```Python
 try:
     self.container[new_item_name] = self.container.pop(item_name)
-    print(f"\nPrevious Item Name: {item_name}, is successfully Updated to: {new_item_name}")
+    
+    message = f"\nCurrent Item Name: {item_name}, "\
+              + f"is Successfully Updated to: {new_item_name}"
+    return message
 except (KeyError):
-    print(f"\nItem {item_name} is Not found, please enter the correct name")
+    message = f"\nItem {item_name} is Not found, \
+        please enter the correct name"
+    return message
 ```
 The method requires 2 parameters:
-* name: The item which its name the user want to replace
-* new_name: The new name of the item
+* ``item_name``: The item which its name the user want to replace
+* ``new_item_name``: The new name of the item
 
-The ``pop()`` method would drop the existing item name value and if the name is not on the self.container dictionary it will catch KeyError exception. When the execption is caught it will print error message.
+The ``pop()`` method would drop the existing item name value and if the name is not on the self.container dictionary it will catch KeyError exception. When the execption is caught it will return "Item Not Found" message, otheriwse successful message is shown.
 
 ##### 3. ``update_item_qty(item_name, new_item_qty)``
 Here is the code snippet for the method
 ```Python
 try:
-    self.container[item_name][0] = int(new_item_qty)
-    print("\nUpdating Item Quantity is Successfull")
+self.container[item_name][0] = int(new_item_qty)
+
+message = "\nUpdating Item Quantity is Successfull"
+return message
 except (KeyError):
-    print(f"\nItem {item_name} is Not found, please enter the correct name")
+message = f"\nItem {item_name} is Not found "\
+            + "please enter the correct name"
+return message
 except (ValueError):
-    print(f"\nNew Quantity Value: {new_item_qty} is Invalid") 
+message = f"\nNew Quantity Value: {new_item_qty} is Invalid"
+return message 
 ```
 The method requires 2 parameters:
 * ``item_name``: The item which its quantitiy (qty) the user want to replace
@@ -107,18 +122,23 @@ The method requires 2 parameters:
 
 The ``item_name`` parameter is used to find the key of specific item we want to delete. The ``[0]`` syntax indicate the index of the list, where the item quantity is always be in the index ``0`` as per our convention before.
 
-We need to caught 2 Exception here, the first one is the KeyError. It is triggered when the item name is not in the dictionary. The second one is the ValueError, which is triggered when the ``new_qty`` parameter is a string instead of integer or floating point.
+We need to caught 2 Exception here, the first one is the KeyError. It is triggered when the item name is not in the dictionary. The second one is the ValueError, which is triggered when the ``new_qty`` parameter is a string instead of integer or floating point. Each exception will return separate messages based on the error. When exception is not caught success message is shown.
 
 ##### 4. ``update_item_price(item_name, new_item_price)``
 Here is the code snippet for the method
 ```Python
 try:
     self.container[item_name][1] = int(new_item_price)
-    print("\nUpdating Item Price is Successfull")
+
+    message = "\nUpdating Item Price is Successfull"
+    return message
 except KeyError:
-    print(f"\nItem {item_name} is Not found, Please Enter The Correct Name")
+    message = f"\nItem {item_name} is Not found, "\
+              + "Please Enter The Correct Name"
+    return message
 except ValueError:
-    print(f"\nNew Price {new_item_price} Value is Invalid") 
+    message = f"\nNew Price {new_item_price} Value is Invalid"
+    return message
 ```
 The method requires 2 parameters:
 * ``item_name``: The item which its price the user want to replace
@@ -133,9 +153,13 @@ Here is the code snippet for the method
 ```Python
 try:
     del self.container[item_name]
-    print(f"\nItem {item_name} Has Been Deleted Successfully")
+
+    message = f"\nItem {item_name} Has Been Deleted Successfully"
+    return message
 except KeyError:
-    print(f"\nItem {item_name} is Not found, Please Enter The Correct Name") 
+    message = f"\nItem {item_name} is Not found, "\
+              + "Please Enter The Correct Name"
+    return message
 ```
 The method requires 1 parameter:
 * ``item_name``: The item which the user want to delete
@@ -148,7 +172,9 @@ The exception KeyError is triggered when the item_name is not available in the d
 Here is the code snippet for the method
 ```Python
 self.container = {}
-print("\nAll Transactions Have Been Deleted Successfully")
+
+message = "All Transactions Have Been Deleted Successfully"
+return message
 ```
 This method is used to delete all items in the transaction container. Since the container is in a dictionary, to remote all dictionary values we just put new dictionary instead.
 
@@ -157,45 +183,64 @@ Here is the code snippet for the method
 ```Python
 # Checking whether the cart is empty or not
 if len(self.container) == 0:
-    return "You Have No Transaction, Please Add Item to Your Transaction"
+    message = "You Have No Transaction, " \
+                + "Please Add Item to Your Transaction"
+    return message
 
+# Make a Deep Copy for the self.container to maintain data integrity
+container_copy = deepcopy(self.container)
+
+# Finding Missing Value or Invalid Value in the self.container
 count = 0
-for key, value in self.container.items():
-    if (key == "") or (value[0] == "") or (value[1] == "") \
-        or (type(key) != str) or (type(value[0]) != int) \
-            or (type(value[1]) != int):
+for key, value in container_copy.items():
+    try:
+        if (key == "") or (value[0] == "") or (value[1] == "") \
+            or (key.isdigit()) or (type(int(value[0])) is not int) \
+                or (type(int(value[0])) is not int):
+            count += 1
+        else:
+            amount = int(container_copy[key][0])*int(container_copy[key][1])
+            container_copy[key].append(amount)
+    except (ValueError):
         count += 1
-    else:
-        amount = self.container[key][0]*self.container[key][1]
-        self.container[key].append(amount)
 
+# Deciding whether the input is valid or not
 if count == 0:
     print("\nYour Input is Valid\n")
 elif count > 0:
     print("\nYour Input is Invalid\n")
 
-data = pd.DataFrame(self.container)
-data = data.transpose().reset_index().rename(columns=self.COLUMN_NAME_MAP)
+# Gather the Value of the dictionary
+data = [value for value in container_copy.values()]
 
-print(data.to_string(index=False))
+# Insert the self.container dictionary key into list in the data
+for num, key in enumerate(container_copy):
+    data[num].insert(0, key)
+
+# Transform the data into table with tabulate
+table = tabulate(data, self.TABLE_HEADERS)
+return table
 ```
-This method is used to checking 'self.container'  dictionary whether there are empty values or not. If yes it will return text if not it will contnue to check the whether 
-there are invalid input or not from the submitted item name, quantity and price.
+This method is used to checking 'self.container'  dictionary whether there are empty values or not. If yes it will return text if not it will contnue to check the whether. there are invalid input or not from the submitted item name, quantity and price.If there are invalid input it will print invalid message else it will print a valid message.
 
-If there are invalid input it will print invalid message else it will print a valid message.
+Regardless the validity of the input, this method will return a table with tabulate module. The module require nested list, hence we need to transform the ``self.container`` because it is in a dictionary. The first step of transformation is to make a deepcopy of the ``self.container`` then we use the copy to find invalid or missing value in the container. If there is missing values or invalid values, then the progam will increase the count. Otherwise, it will add new value in the list which is the multiplication of the item quantity and its price.
 
-Regardless the validity of the input, this method will print the self.container dictionary as Pandas DataFrame.
+The code will continue to get all the values in the ``copy_dictionary`` dictionary, then we insert the key from ``copy_dictionary`` to the list. Then, we use ``tabulate`` function from the ``tabulate`` module, the return value of this function is a string.
 
 ##### 8. ``total_price()``
 Here is the code snippet for the method
 ```Python
+# Checking whether the cart is empty or not
 if len(self.container) == 0:
-    return "You Have No Transaction, Please Add Item to Your Transaction"
+    return "You Have No Transaction, "\
+            + "Please Add Item to Your Transaction"
 
+# Calculating Total Amount
 total = 0
 for value in self.container.values():
     total += value[0]*value[1]
 
+# Deciding discount value
 if (total > self.HIGH_AMOUNT):
     print("CONGRATULATION, YOU GET 10% DISCOUNT!")
     total = total - (total*self.HIGH_DISCOUNT)
@@ -206,24 +251,32 @@ elif (total >= self.LOWER_AMOUNT) and (total <= self.MID_AMOUNT):
     print("CONGRATULATION, YOU GET 5% DISCOUNT!")
     total = total - (total*self.LOWER_DISCOUNT)
 
-print("The products you buy are: ", self.container)
-print("Yourt Total Amount of Purchase is ", total)
+# Create Message to be Shown
+message = f"\nThe products you buy are: {self.container}\n"\
+          + f"Your Total Amount of Purchase is {total}"
+return message
 ```
-This method is used to calculate the amount of all transactions on the container.
+This method, first, will check whether the container is empty or not. if yes it will return a warning text and the process is halted. This method is also used to calculate the amount of all transactions on the container.
 
 If the amount reaches a certain value the amount will get discont and it will be calculated based on this rule:
 1. If an amount is more than 500000, it will calculte the total amount with 10% discount.
 2. If an amount is more than 300000 but less than or equal to 500000 it will calculate the total amount with 8% discount.
 3. If an amount is more than 200000 but less than or equal to 300000 it will calculate the total amount with 5% discount.
 
-This method, first, will check whether the container is empty or not. if yes it will return a warning text and the process is halted.
+### The ``script.py`` Script Explanation
+The ``script.py`` is where the user would interact with the Transaction class. On this file we would like to import these modules:
+```Python
+import os
+from cashier import Transaction
+```
+the Transaction class is from the cashier module we've created before. As for the ``os`` module, We will use two methods from it, which are:
+* ``os.system()``: To send command to the system CLI
+* ``os.name()``: To get the information of the operating system which the program will run
 
-
-### The ``cashier.py`` Script Explanation
-The ``cashier.py`` is the where the user would interact with the Transaction class 
+The ``os.name()`` method is important because the command of each system CLI will be different, hence, we need to define the type of the operating system.
 
 #### The ``main()`` Function
-
+Here is the code snippet:
 ```Python
 transact = Transaction()
 
@@ -232,17 +285,23 @@ transact = Transaction()
 clear_command = "cls" if os.name == "nt" else "clear"
 
 # Main Menu For Our Program
+transact = Transaction()
+
+# Select Clear Command for the Command Line Interface based on the OS
+clear_command = "cls" if os.name == "nt" else "clear"
+
+# Main Menu For Our Program
 while True:
-    print("=======================================\n",
-          "**   Cashier Application             **\n",
-          "=======================================\n",
-          "1. Add Item for Transaction\n"
-          "2. Modify Item in Transaction\n"
-          "3. Delete Item in Transaction\n"
-          "4. Delete All of the Transactions\n"
-          "5. Check Transaction\n"
-          "6. Check Total Amount of Transaction\n"
-          "7. Exit From Program\n")
+    print("=======================================\n"
+            + "**   Cashier Application             **\n"
+            + "=======================================\n"
+            + "1. Add Item for Transaction\n"
+            + "2. Modify Item in Transaction\n"
+            + "3. Delete Item in Transaction\n"
+            + "4. Delete All of the Transactions\n"
+            + "5. Check Transaction\n"
+            + "6. Check Total Amount of Transaction\n"
+            + "7. Exit From Program\n")
 
     try:
         choice = int(input("Select Menu [1-7]: "))
@@ -253,13 +312,14 @@ while True:
         elif (choice == 3):
             delete_item_menu(transact, clear_command)
         elif (choice == 4):
-            reset_cart_menu(transact, clear_command)
+            reset_menu(transact)
         elif (choice == 5):
-            transact.check_order()
+            message = transact.check_order()
+            print(message)
         elif (choice == 6):
-            transact.total_price()
+            message = transact.total_price()
+            print(message)
         elif (choice == 7):
-            os.system(clear_command)
             exit()
         else:
             print(MENU_NOT_AVAILABLE_MSG)
@@ -267,7 +327,7 @@ while True:
         input("\nPress Enter to Continue\n")
         os.system(clear_command)
     except ValueError:
-        print(SELECTION_NOT_INTEGER)
+        print(SELECTION_NOT_INTEGER_MSG)
         os.system(clear_command)
 ```
 
@@ -277,9 +337,9 @@ Explanation:
 * The ``while`` loop is used to always show the main menu of the program.
 * There are 7 menu that can be selected by users, if users enter number beyond 7 it will prompt warning. If users enter as string instead number (integer) it will raise exception and warning message is shown.
 * When the user select menu number 1-4, it will call function that shows sub-menu, respectively.
-* Menu number 5-6 will call ``Transaction.check_order()`` method and ``Transaction.total_price`` method respectively.
+* Menu number 5-6 will call ``Transaction.check_order()`` method and ``Transaction.total_price()`` method respectively.
 
-#### ``add_new_item_menu()`` Function
+#### ``add_new_item_menu(transaction_class, command)`` Function
 By selecting number from the main menu, 1 the user we will call ``add_new_item()`` function:
 
 ````Python
@@ -301,10 +361,14 @@ transaction_class.add_item(
     item_price=item_price
 )
 ````
+The function requires 2 parameters:
+* transaction_class: provide the Transaction class in this function
+* command: The command to clear the program
+
 The function, first, would clear the CLI then show a message to the user to input the item name. Then we prompt item qty and item price message, respectively. The the program will call the ``Transaction.add_item()`` method to store the values users have submitted.
 
-#### ``modify_item_menu()`` Function
-When this option is selected by user, the program would call ``modify_item_menu()`` function. 
+#### ``modify_item_menu(transaction_class, command)`` Function
+When this option is selected by user, the program would call ``modify_item_menu()`` function.
 ```Python
 # Clear the main menu
 os.system(command)
@@ -348,6 +412,10 @@ try:
 except ValueError:
     print(SELECTION_NOT_INTEGER)
 ```
+The function requires 2 parameters:
+* transaction_class: provide the Transaction class in this function
+* command: The command to clear the program
+
 Code Explanation:
 * First, the code would clear the CLI screen
 * User can select 4 menu where the menu number 4 is to exit the program.
@@ -356,40 +424,54 @@ Code Explanation:
     * ``Trsansaction.modify_item_qty()`` will be called in the menu number 2.
     * ``Transaction.modify_item_price()`` will be called in the menu number 3.
 
-#### ``delete_item`` Function
+#### ``delete_item(transaction_class, command)`` Function
 This function is triggered when user select menu number 3. Here is the code snippet:
 ```Python
-# Clearing the main menu
 os.system(command)
 
 # Displaying the delete menu
-print("================================\n",
-      "** Delete Single Item Menu    **\n",
-      "================================\n",)
-item_name = input("\nPlease Enter the Item Name to be Deleted: ")
+print("================================\n"
+        + "** Delete Single Item Menu    **\n"
+        + "================================\n")
+item_name = input("Please Enter the Item Name to be Deleted: ")
 
-# Calling Transaction.delete_item() method
-transaction_class.delete_item(name=item_name)
+print(f"\nAre You Sure You want to delete '{item_name}' item?\n"
+        + "1. Yes\n"
+        + "2. No\n")
+
+try:
+    choice = int(input("Select The Menu [1-2]: "))
+    if (choice == 1):
+        # Calling Transaction.delete_item() method
+        message = transaction_class.delete_item(item_name=item_name)
+        print(message)
+    elif (choice == 2):
+        print(BACK_TO_MAIN_MENU_MSG)
+    else:
+        print(MENU_NOT_AVAILABLE_MSG)
+except ValueError:
+    print(SELECTION_NOT_INTEGER_MSG)
 ```
-First, the ``os.system(command)`` will clear the CLI. Then it will show the menu and a prompt asking the user to enter the item name they wish to delete.
+First, the ``os.system(command)`` will clear the CLI. Then it will show the menu and a prompt asking the user to enter the item name they wish to delete. Then the CLI screen will be cleared and the user will be asked whether they are sure to delete the desired item.
 
 #### ``reset_menu()`` Function
 This function is triggered when user select menu number 4. Here is the code snippet:
 ```Python
-print("Are You Sure you Want to Delete all of the Transaction\n"
-      "1. Yes\n"
-      "2. No\n")
-    
+print("\nAre You Sure you Want to Delete all of the Transaction\n"
+        "1. Yes\n"
+        "2. No\n")
+
 try:
     choice = int(input("Select Menu [1-3]: "))
     if (choice == 1):
-        transaction_class.reset_transaction()
+        message = transaction_class.reset_transaction()
+        print(message)
     elif (choice == 2):
         print("\nDelete is Cancelled, Back to Main Menu")
     else:
-        print("\nPlease Select the Available Menu")
+        print(MENU_NOT_AVAILABLE_MSG)
 except ValueError:
-    print(SELECTION_NOT_INTEGER)
+    print(SELECTION_NOT_INTEGER_MSG)
 ```
 The function will prompt question to the user whether they want to delete all items in the transaction. Choice 1 is to agree to delete while Choice 2 is to disagree to delete.
 

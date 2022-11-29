@@ -1,5 +1,8 @@
 # Pacmann Python Projects - Super Cashier
 
+## Quick Use
+If you are interested to run the program feel free to clone this repo and run the ``script.py`` 
+
 ## Introduction
 ### Project Background
 An Online Supermarket wants to add a new feature to their application to help their customers or users to add, modify and delete their transactions which contains the name of the items, the quantity of the items, the price of the items that. The desired feature is also required to provide transction checkers to notify user whether their items in their transaction are already valid or not. Also the apps wants to help the users to calculate of the total amount of the transactions along with the discount calculation if the certain amount of transaction is reached.
@@ -23,7 +26,30 @@ From the background above we would provide a solution called **Cashier** program
 Users can interact with these features through the interactive Command Line Interface (CLI).
 
 ### Flow Chart
-Will be loaded later
+The program will be created as CLI-based program or application, hence there will be menu for the users to be selected. Each selected menu will trigger another menu to appear and then call the appropriate method in the Transaction class. Here we will explore the flow of the menu and the method.
+
+#### Main Menu Workflow
+In the main menu, the Transaction class is instantiated then the main menu is shown and the user can select 7 available menu which leads to another menu or directly call the method in the Transaction class or exit program:
+![main menu](workflow/main_menu.jpg)
+
+For add item menu here is the workflow:
+![add item menu](workflow/add_item.png)
+
+in this method we also called the Transaction.add_item( method from our class. The workflow of the method can be seen in the diagram above.
+
+For modify menu, it will display another menu and call ``Transaction.update_item_name()``, ``Transaction.update_item_qty()`` and ``Transaction.update_item_price()`` methods. Here are the workflow of the menu and the methods:
+![modify item menu](workflow/modify_item_menu.png)
+![Transaction update methods](workflow/transaction_update_methods.png)
+
+For the delete menu here is the workflow along with the workflow of the method that is called:
+![delete item menu](workflow/delete_item.png)
+
+Here is the menu for for reset all of the items in our transaction and its method:
+![reset menu](workflow/reset_item.png)
+
+The menu 5 - 6 will directly call the ``Transaction.check_order()`` and ``Transaction.total_price()`` menu which have the following flowchart:
+![check order](workflow/check_order.jpg)
+![total price](workflow/total_price.jpg)
 
 ## Code Explanation
 ### The script.py Function
@@ -476,6 +502,36 @@ except ValueError:
 The function will prompt question to the user whether they want to delete all items in the transaction. Choice 1 is to agree to delete while Choice 2 is to disagree to delete.
 
 #### Test Case
+There are few test cases that should be run in order to verify whether some of the requirements operate as expected. The test case is run within the ``test_cases.ipynb`` file.
+##### 1. Test 1
+This is test is to check whether the ``add_item()`` method is working as expeceted. Here is expected result:
+[test case 1](img/test_cases/test_case1.JPG)
+Here is the test result:
+[test case 1 result](img/test_cases/test_case1_result.JPG)
+As you can see the test result is as expected.
+
+##### 2. Test 2
+This is test is to check whether the ``delete_item()`` method is working as expeceted. Here is expected result:
+[test case 2](img/test_cases/test_case2.JPG)
+Here is the test result:
+[test case 2 result](img/test_cases/test_case2_result.JPG)
+As you can see the test result is as expected.
+
+##### 3. Test 3
+This is test is to check whether the ``reset_transaction()`` method is working as expeceted. Here is expected result:
+[test case 3](img/test_cases/test_case3.JPG)
+Here is the test result:
+[test case 3 result](img/test_cases/test_case3_result.JPG)
+As you can see the test result is as expected.
+##### 4. Test 4
+This is test is to check whether the ``total_price()`` method is working as expeceted. Here is expected result:
+[test case 4](img/test_cases/test_case4.JPG)
+Here is the test result:
+[test case 4 result](img/test_cases/test_case4_result.JPG)
+As you can see the test result is as expected.
 
 #### Conclusion
+From the workflow the application might look complex, however, the core application itself is simple enough to build except for the ``check_order()`` method where we need to make a deepcopy and transform dictionary into nested list so it can be transformed into a table.
 
+##### Future works
+Since, the core program is simple, we could use it in different application environment such as web application or mobile application. Then, we use database to collect the data that is submitted by user then use the data to provide visualization for the users.

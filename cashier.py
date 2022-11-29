@@ -114,7 +114,6 @@ class Transaction:
         """
 
         self.container[item_name] = [item_qty, item_price]
-
         message = "\nItem is successfully Added"
         return message
 
@@ -146,14 +145,13 @@ class Transaction:
 
         try:
             self.container[new_item_name] = self.container.pop(item_name)
-
             message = f"\nCurrent Item Name: {item_name}, "\
                       + f"is Successfully Updated to: {new_item_name}"
-            return message
         except (KeyError):
-            message = f"\nItem {item_name} is Not found, \
-                please enter the correct name"
-            return message
+            message = f"\nItem {item_name} is Not found, "\
+                      + "please enter the correct name"
+
+        return message
 
     def update_item_qty(self, item_name, new_item_qty):
         """Updatig the quantity of a certain item.
@@ -188,16 +186,14 @@ class Transaction:
 
         try:
             self.container[item_name][0] = int(new_item_qty)
-
             message = "\nUpdating Item Quantity is Successfull"
-            return message
         except (KeyError):
             message = f"\nItem {item_name} is Not found "\
                       + "please enter the correct name"
-            return message
         except (ValueError):
             message = f"\nNew Quantity Value: {new_item_qty} is Invalid"
-            return message
+
+        return message
 
     def update_item_price(self, item_name, new_item_price):
         """Updatig the price of a certain item.
@@ -233,16 +229,14 @@ class Transaction:
 
         try:
             self.container[item_name][1] = int(new_item_price)
-
             message = "\nUpdating Item Price is Successfull"
-            return message
         except KeyError:
             message = f"\nItem {item_name} is Not found, "\
                       + "Please Enter The Correct Name"
-            return message
         except ValueError:
             message = f"\nNew Price {new_item_price} Value is Invalid"
-            return message
+
+        return message
 
     def delete_item(self, item_name):
         """Deleting a single item in the self.container dictionary
@@ -270,13 +264,12 @@ class Transaction:
 
         try:
             del self.container[item_name]
-
             message = f"\nItem {item_name} Has Been Deleted Successfully"
-            return message
         except KeyError:
             message = f"\nItem {item_name} is Not found, "\
                       + "Please Enter The Correct Name"
-            return message
+
+        return message
 
     def reset_transaction(self):
         """Deleting all of the item in the self.container dictionary.
@@ -291,7 +284,6 @@ class Transaction:
         """
 
         self.container = {}
-
         message = "All Transactions Have Been Deleted Successfully"
         return message
 
@@ -333,7 +325,8 @@ class Transaction:
                         or (type(int(value[0])) is not int):
                     count += 1
                 else:
-                    amount = int(container_copy[key][0])*int(container_copy[key][1])
+                    amount = int(container_copy[key][0]) \
+                             * int(container_copy[key][1])
                     container_copy[key].append(amount)
             except (ValueError):
                 count += 1
@@ -410,8 +403,4 @@ class Transaction:
 
 
 if __name__ == "__main__":
-    test = Transaction()
-    test.add_item("Gula", 1, 100)
-    test.add_item("Garam", 2, 200)
-    print(test.check_order())
-    print(type(test.check_order()))
+    pass

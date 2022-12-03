@@ -30,26 +30,26 @@ The program will be created as CLI-based program or application, hence there wil
 
 #### Main Menu Workflow
 In the main menu, the Transaction class is instantiated then the main menu is shown and the user can select 7 available menu which leads to another menu or directly call the method in the Transaction class or exit program:
-![main menu](workflow/main_menu.jpg)
+![main menu](img/workflow/main_menu.jpg)
 
 For add item menu here is the workflow:
-![add item menu](workflow/add_item.png)
+![add item menu](img/workflow/add_item.png)
 
 in this method we also called the Transaction.add_item( method from our class. The workflow of the method can be seen in the diagram above.
 
 For modify menu, it will display another menu and call ``Transaction.update_item_name()``, ``Transaction.update_item_qty()`` and ``Transaction.update_item_price()`` methods. Here are the workflow of the menu and the methods:
-![modify item menu](workflow/modify_item_menu.png)
-![Transaction update methods](workflow/transaction_update_methods.png)
+![modify item menu](img/workflow/modify_item_menu.png)
+![Transaction update methods](img/workflow/transaction_update_methods.png)
 
 For the delete menu here is the workflow along with the workflow of the method that is called:
-![delete item menu](workflow/delete_item.png)
+![delete item menu](img/workflow/delete_item.png)
 
 Here is the menu for for reset all of the items in our transaction and its method:
-![reset menu](workflow/reset_item.png)
+![reset menu](img/workflow/reset_item.png)
 
 The menu 5 - 6 will directly call the ``Transaction.check_order()`` and ``Transaction.total_price()`` menu which have the following flowchart:
-![check order](workflow/check_order.jpg)
-![total price](workflow/total_price.jpg)
+![check order](img/workflow/check_order.jpg)
+![total price](img/workflow/total_price.jpg)
 
 ## Code Explanation
 ### The script.py Function
@@ -505,29 +505,29 @@ The function will prompt question to the user whether they want to delete all it
 There are few test cases that should be run in order to verify whether some of the requirements operate as expected. The test case is run within the ``test_cases.ipynb`` file.
 ##### 1. Test 1
 This is test is to check whether the ``add_item()`` method is working as expeceted. Here is expected result:
-[test case 1](img/test_cases/test_case1.JPG)
+![test case 1](img/test_cases/test_case1.JPG)
 Here is the test result:
-[test case 1 result](img/test_cases/test_case1_result.JPG)
+![test case 1 result](img/test_cases/test_case1_result.JPG)
 As you can see the test result is as expected.
 
 ##### 2. Test 2
 This is test is to check whether the ``delete_item()`` method is working as expeceted. Here is expected result:
-[test case 2](img/test_cases/test_case2.JPG)
+![test case 2](img/test_cases/test_case2.JPG)
 Here is the test result:
-[test case 2 result](img/test_cases/test_case2_result.JPG)
+![test case 2 result](img/test_cases/test_case2_result.JPG)
 As you can see the test result is as expected.
 
 ##### 3. Test 3
 This is test is to check whether the ``reset_transaction()`` method is working as expeceted. Here is expected result:
-[test case 3](img/test_cases/test_case3.JPG)
+![test case 3](img/test_cases/test_case3.JPG)
 Here is the test result:
-[test case 3 result](img/test_cases/test_case3_result.JPG)
+![test case 3 result](img/test_cases/test_case3_result.JPG)
 As you can see the test result is as expected.
 ##### 4. Test 4
 This is test is to check whether the ``total_price()`` method is working as expeceted. Here is expected result:
-[test case 4](img/test_cases/test_case4.JPG)
+![test case 4](img/test_cases/test_case4.JPG)
 Here is the test result:
-[test case 4 result](img/test_cases/test_case4_result.JPG)
+![test case 4 result](img/test_cases/test_case4_result.JPG)
 As you can see the test result is as expected.
 
 #### Conclusion

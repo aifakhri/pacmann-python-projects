@@ -227,7 +227,7 @@ def main():
         The exception will raise if a user enter string instead of an integer.
     """
 
-    transact = Transaction()
+    trnsct_123 = Transaction()
 
     # Select Clear Command for the Command Line Interface based on the OS
     clear_command = "cls" if os.name == "nt" else "clear"
@@ -248,18 +248,18 @@ def main():
         try:
             choice = int(input("Select Menu [1-7]: "))
             if (choice == 1):
-                add_new_item_menu(transact, clear_command)
+                add_new_item_menu(trnsct_123, clear_command)
             elif (choice == 2):
-                modify_item_menu(transact, clear_command)
+                modify_item_menu(trnsct_123, clear_command)
             elif (choice == 3):
-                delete_item_menu(transact, clear_command)
+                delete_item_menu(trnsct_123, clear_command)
             elif (choice == 4):
-                reset_menu(transact)
+                reset_menu(trnsct_123)
             elif (choice == 5):
-                message = transact.check_order()
+                message = trnsct_123.check_order()
                 print(message)
             elif (choice == 6):
-                message = transact.total_price()
+                message = trnsct_123.total_price()
                 print(message)
             elif (choice == 7):
                 exit()

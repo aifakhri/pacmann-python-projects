@@ -11,13 +11,21 @@ An Online Supermarket wants to add a new feature to their application to help th
 From the background above we would provide a solution called **Cashier** program. The program is a Command Line Interface (CLI) progam which is coded in Python. Here are the requirement of the program:
 - Absracting the cashier in a Class called Transaction.
 - Create class' method for adding item name, item quantity and item price.
+method name and parameters: ``add_item(item_name, item_qty, item_price)`` 
 - Create class' method for updating item name on the cart.
+method name and parameters: ``update_item_name(item_name, new_item_name)``
 - Create class' method for updating item quantity of a certain item.
+method name and parameters: ``update_item_qty(item_name, new_item_qty)``
 - Create class' method for updating item price of a certain item.
+method name and parameters: ``update_item_price(item_name, new_item_price)``
 - Create class' method for deleting a single item.
+method name and parameters: ``delete_item(item_name)``
 - Create class' method for deleting all of the items.
-- Create class' method for checking the transaction, whether there is an empty cart or invalid value inside the cart.
+method name: ``reset_transaction()``
+- Create class' method for checking the transaction, whether there is an empty cart or invalid value inside the cart. If the there is an empty or invalid value it will return a message that the order is invalid otherwise it return a message that order is valid. Regardless the validity, the program will return a table which contains the item name, item quantity, total price and total amount of the item.
+method name: ``check_order()``
 - Create class' method for calculating the total purchase of the entire Transaction. If the the purchase reaches a certain limit, the purchase would be discounted.
+method name and attributes: ``total_price()``
 - The discount requitements are:
     - if the total price of the purchase is greater than Rp. 500,000 the discount is 10%
     - if the total price of the purchase is greater than Rp. 300,000 the discount is 8%

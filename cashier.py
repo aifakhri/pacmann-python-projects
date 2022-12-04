@@ -100,17 +100,10 @@ class Transaction:
         item_price: int (mandatory)
             The price of the item
 
-        Exception
-        ---------
-        ValueError
-            If the object type from quantity and price is not what is expected.
-            It will print invalid message.
-
         Returns
         -------
         str
             Success message (text/str) when the execption is not raised.
-            Failed message (text/str) when the execption is raised
         """
 
         self.container[item_name] = [item_qty, item_price]
@@ -364,6 +357,12 @@ class Transaction:
         This method, first, will check whether the container is empty or not.
         if yes it will return a warning text.
 
+        Exception
+        ---------
+        TypeError:
+            If there are invalid amount during total price calculation
+            The program will return a message
+        
         Returns
         -------
         str

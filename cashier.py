@@ -28,8 +28,8 @@ class Transaction:
     HIGH_DISCOUNT : float
         The 10% discount value in floating point.
 
-    COLUMN_NAME_MAP : dictionary
-        Manual mapping of column to be displayed in Pandas DataFrame.
+    TABLE_HEADERS : list
+        The list of headers to be used in the tabulate table.
 
     container : dict
         A dictionary to contain items that is stored in the transaction
@@ -89,31 +89,50 @@ class Transaction:
         """Adding item to the Transaction container like name,
         quantity(qty) and price of the item.
 
+        All parameters input are in string (due to the CLI script). Hence,
+        the data type should be checked and transformed with these guidlines:
+            1. item_name should always a string if not error message is raised
+            2. item_qty should be an integer if not error message is raised.
+            3. item_price should be an integer if not error message is raised.
+
         Parameters
         ----------
-        item_name : str (mandatory)
+        item_name : str
             The name of the item.
 
-        item_qty : int (mandatory)
+        item_qty : str
             The quantity of the item.
 
-        item_price: int (mandatory)
+        item_price: str
             The price of the item
 
         Returns
         -------
         str
             Success message (text/str) when the execption is not raised.
+            Failed message when the par
         """
 
-        self.container[item_name] = [item_qty, item_price]
-        message = "\nItem is successfully Added"
+        try:
+            # Type checkers for item_name input
+            if item_name.isdigit() or self._is_float(item_name=item_name):
+                message = "Item can't be added. Item Name is not string "\
+                          +"Please enter the correct format."
+            else:
+                self.container[item_name] = [int(item_qty), int(item_price)]
+                message = "Item is successfully Added"
+        except (ValueError):
+            message = "Item can't be added, Item Qty or Item Price "\
+                      +"is not integer, Please enter the correct format."
+
         return message
 
     def update_item_name(self, item_name, new_item_name):
         """Updating the current item name to the new one.
 
-        if the item is not in the self.container, it will print error message
+        if the item is not in the self.container, it will print error message.
+        And if the new_item_name is a float or integer it will print
+        error message.
 
         Parameters
         ----------
@@ -137,9 +156,14 @@ class Transaction:
         """
 
         try:
-            self.container[new_item_name] = self.container.pop(item_name)
-            message = f"\nCurrent Item Name: {item_name}, "\
-                      + f"is Successfully Updated to: {new_item_name}"
+            if new_item_name.isdigit() or \
+                self._is_float(item_name=new_item_name):
+                message = "Item can't be added. Item Name is not string "\
+                          +"Please enter the correct format."
+            else:
+                self.container[new_item_name] = self.container.pop(item_name)
+                message = f"\nCurrent Item Name: {item_name}, "\
+                        + f"is Successfully Updated to: {new_item_name}"
         except (KeyError):
             message = f"\nItem {item_name} is Not found, "\
                       + "please enter the correct name"
@@ -309,20 +333,15 @@ class Transaction:
         # Make a Deep Copy for the self.container to maintain data integrity
         container_copy = deepcopy(self.container)
 
-        # Finding Missing Value or Invalid Value in the self.container
+        # Finding Missing Value the self.container
         count = 0
         for key, value in container_copy.items():
-            try:
-                if (key == "") or (value[0] == "") or (value[1] == "") \
-                    or (key.isdigit()) or (type(int(value[0])) is not int) \
-                        or (type(int(value[0])) is not int):
-                    count += 1
-                else:
-                    amount = int(container_copy[key][0]) \
-                             * int(container_copy[key][1])
-                    container_copy[key].append(amount)
-            except (ValueError):
+            if (key == "") or (value[0] == "") or (value[1] == ""):
                 count += 1
+            else:
+                amount = int(container_copy[key][0]) \
+                            * int(container_copy[key][1])
+                container_copy[key].append(amount)
 
         # Deciding whether the input is valid or not
         if count == 0:
@@ -378,12 +397,7 @@ class Transaction:
         # Calculating Total Amount
         total = 0
         for value in self.container.values():
-            if value[0].isdigit() or value[1].isdigit():
-                total += int(value[0])*(int(value[1]))
-            else:
-                message = "You have Invalid Price and Qty "\
-                          +"Input Cannot Get The Total Price"
-                return message
+            total += (value[0])*(value[1])
 
         # Deciding discount value
         if (total > self.HIGH_AMOUNT):
@@ -401,7 +415,30 @@ class Transaction:
                   + f"Your Total Amount of Purchase is {total}"
         return message
 
+    def _is_float(self, item_name):
+        """Checking whether an item_name is a float or not
+
+        Parameters:
+        -----------
+        Item_name: str
+            Name of the item
+
+        Exceptions:
+        -----------
+        ValueError:
+            Will be triggered if the item_name cannot be transformed
+            into a float.
+
+        Return:
+        -------
+        boolean:
+            True if the string is a float, False otherwise
+        """
+        try:
+            float(item_name)
+            return True
+        except (ValueError):
+            return False
 
 if __name__ == "__main__":
     pass
-    

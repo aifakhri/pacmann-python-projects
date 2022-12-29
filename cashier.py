@@ -362,7 +362,7 @@ class Transaction:
         TypeError:
             If there are invalid amount during total price calculation
             The program will return a message
-        
+
         Returns
         -------
         str
@@ -376,13 +376,14 @@ class Transaction:
                    + "Please Add Item to Your Transaction"
 
         # Calculating Total Amount
-        try:
-            total = 0
-            for value in self.container.values():
-                total += value[0]*value[1]
-        except (TypeError):
-            message = "You have Invalid Input Cannot Get The Total Price"
-            return message
+        total = 0
+        for value in self.container.values():
+            if value[0].isdigit() or value[1].isdigit():
+                total += int(value[0])*(int(value[1]))
+            else:
+                message = "You have Invalid Price and Qty "\
+                          +"Input Cannot Get The Total Price"
+                return message
 
         # Deciding discount value
         if (total > self.HIGH_AMOUNT):
@@ -403,3 +404,4 @@ class Transaction:
 
 if __name__ == "__main__":
     pass
+    
